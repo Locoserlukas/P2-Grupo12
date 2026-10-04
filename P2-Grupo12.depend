@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1791146021 source:c:\users\alfon\dropbox\eda\p2-grupo12\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<strings.h>
+	<ctype.h>
+	<math.h>
+	"Padron.h"
+
+1791145894 c:\users\alfon\dropbox\eda\p2-grupo12\padron.h
+
