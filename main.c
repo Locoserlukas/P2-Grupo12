@@ -3,7 +3,7 @@
 #include <string.h>
 #include <strings.h>
 #include <ctype.h>
-#define TAM 10
+#define TAMANO 2000
 #define ANCHO_COL0  22
 #define ANCHO_DATOS 14
 #include "Padron.h"
@@ -11,7 +11,9 @@
 #include "RAC.h"
 #include "RAL.h"
 
-void TablaComparadora(float costos[4][6], float maximos[4][3]);
+void TablaComparadora(float costos[4][6], float maximos[4][3]); // la matriz se va a achicar por lo que parece
+
+int Hashing (int DNI); //la defino aqui porque es generica para todas las estructuras
 
 int main()
 {
@@ -69,7 +71,19 @@ int main()
     } while(1==1);
 }
 
-void TablaComparadora(float costos[4][6], float maximos[4][3]) //puede quedar obsoleta
+int Hashing (int DNI) //modificado ya que todos los dni miden 10 caracteres
+{
+    char X[10];
+    int i, contador = 0;
+    sprintf(X, "%d", DNI);
+    for(i = 0; i < 10; i++)
+    {
+        contador += ((int)X[i])*(i+1);
+    }
+    return contador % TAMANO;
+}
+
+void TablaComparadora(float costos[4][6], float maximos[4][3]) // quedo obsoleta
 {
     const char *ops[4] =
     {

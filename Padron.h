@@ -11,6 +11,7 @@ typedef struct Padron
     int Cod_Postal;
     int Mesa;
     int Circuito;
+    int Estado; //indica si la posicion en el rebalse esta libre "2", ocupada "1" u virgen "0"
 } Padron;
 
 void init_Padron (Padron *padron)
