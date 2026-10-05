@@ -14,6 +14,18 @@ typedef struct Padron
     int Estado; //indica si la posicion en el rebalse esta libre "2", ocupada "1" u virgen "0"
 } Padron;
 
+int Hashing (int DNI, int tamanio)
+{
+    char X[10];
+    int i, contador = 0;
+    sprintf(X, "%d", DNI);
+    for(i = 0; i < strlen(X); i++)
+    {
+        contador += ((int)X[i])*(i+1);
+    }
+    return contador % tamanio;
+}
+
 void init_Padron (Padron *padron)
 {
     padron->DNI = 0;
