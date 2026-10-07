@@ -3,6 +3,7 @@
 #define MAX_NOMBRE 51
 #define MAX_DOMICILIO 81
 
+
 typedef struct Padron
 {
     int DNI;
@@ -14,16 +15,17 @@ typedef struct Padron
     int Estado; //indica si la posicion en el rebalse esta libre "2", ocupada "1" u virgen "0"
 } Padron;
 
-int Hashing (int DNI, int tamanio)
-{
-    char X[10];
-    int i, contador = 0;
-    sprintf(X, "%d", DNI);
-    for(i = 0; i < strlen(X); i++)
-    {
-        contador += ((int)X[i])*(i+1);
+int hashing(int dni, int M) {
+    char x[10];
+    int longitud, i;
+    int contador = 0;
+
+    sprintf(x, "%d", dni);
+    longitud = strlen(x);
+    for (i = 0; i < longitud; i++) {
+        contador += ((int)x[i]) * (i + 1);
     }
-    return contador % tamanio;
+    return (contador % M);
 }
 
 void init_Padron (Padron *padron)

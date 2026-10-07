@@ -21,7 +21,7 @@ void Inicializador_RAL (RAL *Ral)
 
 int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
 {
-    int Candidato = Hashing(DNI, TAMANO_RAL), i = 0;
+    int Candidato = hashing(DNI, TAMANO_RAL), i = 0;
     *Posicion = -1;
     *Celdas_Consultadas = 0;
 

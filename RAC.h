@@ -21,7 +21,7 @@ void Inicializador_RAC (RAC *Rac)
 
 int Localizador_RAC (RAC *Rac, int DNI, int *Posicion, int *Celdas_Consultadas)
 {
-    int Candidato = Hashing(DNI, TAMANO_RAC), i = 0, k = 1;
+    int Candidato = hashing(DNI, TAMANO_RAC), i = 0, k = 1;
     *Posicion = -1;
     *Celdas_Consultadas = 0;
 
