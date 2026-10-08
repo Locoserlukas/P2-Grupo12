@@ -47,7 +47,7 @@ int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
         (*Celdas_Consultadas)++;
     }
 
-    if ((*Ral).Votantes[i].Estado && *Posicion == -1) //por si caemos en una celda virgen y no encontramos una libre antes
+    if (!(*Ral).Votantes[Candidato].Estado && *Posicion == -1) //por si caemos en una celda virgen y no encontramos una libre antes
     {
         *Posicion = Candidato;
     }
@@ -55,24 +55,59 @@ int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
     return 0; //no esta en el rebalse
 }
 
-
-/* int Insertar_RAL (RAL *Ral, Padron Votante)
+int Insertar_RAL (RAL *Ral, Padron Votante)
 {
-
+    int Celdas, Posicion;
+    if((*Ral).Ocupadas == TAMANO_RAL) //esta lleno el RAL
+    {
+        return 0;
+    }
+    if(Localizador_RAL(Ral,get_DNI(Votante),&Posicion,&Celdas)) //revisa si encuentra al votante y nos da la posicion donde iria si no esta
+    {
+        return 0;
+    }
+    if(Posicion = -1) //no encontro una celda virgen ni vacia en ningun momento
+    {
+        return 0;
+    }
+    (*Ral).Votantes[Posicion] = Votante;
+    return 1;
 }
-*/
 
-/* int Eliminar_RAL (RAL *Ral, Padron Votante)
+
+int Eliminar_RAL (RAL *Ral, Padron Votante)
 {
-
+    int Celdas, Posicion;
+    if((*Ral).Ocupadas) //esta vacio el RAL
+    {
+        return 0;
+    }
+    if(!Localizador_RAL(Ral,get_DNI(Votante),&Posicion,&Celdas)) //no lo encontro
+    {
+        return 0;
+    }
+    if(comparaPadron(Votante,(*Ral).Votantes[Posicion]))
+    {
+        (*Ral).Votantes[Posicion].Estado = 2; //marca la celda como libre
+        return 1;
+    }
+    return 0;
 }
-*/
 
-/* int Evocar_RAL (RAL *Ral, Padron *Votante)
+int Evocar_RAL (RAL *Ral, int DNI, Padron *Votante,int *Celdas_Consultadas)
 {
-
+    int Posicion;
+    if((*Ral).Ocupadas) //esta vacio el RAL
+    {
+        return 0;
+    }
+    if(Localizador_RAL(Ral,DNI,&Posicion,Celdas_Consultadas)) //no lo encontro
+    {
+        *Votante = (*Ral).Votantes[Posicion];
+        return 1;
+    }
+    return 0;
 }
-*/
 
 /* void Mostrar_RAL (RAL *Ral)
 {

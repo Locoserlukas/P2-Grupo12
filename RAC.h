@@ -56,24 +56,58 @@ int Localizador_RAC (RAC *Rac, int DNI, int *Posicion, int *Celdas_Consultadas)
     return 0; //no esta en el rebalse
 }
 
-
-/* int Insertar_RAC (RAC *Rac, Padron Votante)
+int Insertar_RAC (RAC *Rac, Padron Votante)
 {
-
+    int Celdas, Posicion;
+    if((*Rac).Ocupadas == TAMANO_RAC) //esta lleno el RAC
+    {
+        return 0;
+    }
+    if(Localizador_RAC(Rac,get_DNI(Votante),&Posicion,&Celdas)) //revisa si encuentra al votante y nos da la posicion donde iria si no esta
+    {
+        return 0;
+    }
+    if(Posicion = -1) //no encontro una celda virgen ni vacia en ningun momento
+    {
+        return 0;
+    }
+    (*Rac).Votantes[Posicion] = Votante;
+    return 1;
 }
-*/
 
-/* int Eliminar_RAC (RAC *Rac, Padron Votante)
+int Eliminar_RAC (RAC *Rac, Padron Votante)
 {
-
+    int Celdas, Posicion;
+    if((*Rac).Ocupadas) //esta vacio el RAC
+    {
+        return 0;
+    }
+    if(!Localizador_RAC(Rac,get_DNI(Votante),&Posicion,&Celdas)) //no lo encontro
+    {
+        return 0;
+    }
+    if(comparaPadron(Votante,(*Rac).Votantes[Posicion]))
+    {
+        (*Rac).Votantes[Posicion].Estado = 2; //marca la celda como libre
+        return 1;
+    }
+    return 0;
 }
-*/
 
-/* int Evocar_RAC (RAC *Rac, Padron *Votante)
+int Evocar_RAC (RAL *Rac, int DNI, Padron *Votante,int *Celdas_Consultadas)
 {
-
+    int Posicion;
+    if((*Rac).Ocupadas) //esta vacio el RAL
+    {
+        return 0;
+    }
+    if(Localizador_RAC(Rac,DNI,&Posicion,Celdas_Consultadas)) //no lo encontro
+    {
+        *Votante = (*Rac).Votantes[Posicion];
+        return 1;
+    }
+    return 0;
 }
-*/
 
 /* void Mostrar_RAC (RAC *Rac)
 {
