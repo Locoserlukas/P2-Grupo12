@@ -72,6 +72,7 @@ int Insertar_RAC (RAC *Rac, Padron Votante)
         return 0;
     }
     (*Rac).Votantes[Posicion] = Votante;
+    (*Rac).Ocupadas++;
     return 1;
 }
 
@@ -89,6 +90,7 @@ int Eliminar_RAC (RAC *Rac, Padron Votante)
     if(comparaPadron(Votante,(*Rac).Votantes[Posicion]))
     {
         (*Rac).Votantes[Posicion].Estado = 2; //marca la celda como libre
+        (*Rac).Ocupadas--;
         return 1;
     }
     return 0;
@@ -109,10 +111,26 @@ int Evocar_RAC (RAL *Rac, int DNI, Padron *Votante,int *Celdas_Consultadas)
     return 0;
 }
 
-/* void Mostrar_RAC (RAC *Rac)
+void Mostrar_RAC (RAC *Rac)
 {
-
+    int i, Condicion;
+    printf ("\t Votantes Rebalse Abierto Cuadratico (RAC) \n");
+    for (i = 0; i < TAMANO_RAC; i++)
+    {
+        Condicion = (*Rac).Votantes[i].Estado;
+        if(!Condicion) //la celda es virgen
+        {
+            pritnf ("\n La posicion %d es virgen \n", i);
+        }
+        if(Condicion == 1) //la celda esta ocupada
+        {
+            printPadron((*Rac).Votantes[i]);
+        }
+        if(Condicion == 2) //la celda esta libre
+        {
+            pritnf ("\n La posicion %d esta libre \n", i);
+        }
+    }
 }
-*/
 
 #endif // RAC_H_INCLUDED
