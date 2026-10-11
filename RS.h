@@ -1,9 +1,10 @@
 #ifndef RS_H_INCLUDED
 #define RS_H_INCLUDED
 #include "Padron.h"
-#define TAM_RS 1249   // Numero primo mas cercano a 2000/1.61*1 = 1242.23
+// 2000 / (1.61 * 1) = 1242.23 -> Primo superior mas cercano: 1249
+#define TAM_RS 1249   
 
-typedef struct
+typedef struct Nodo_Lv
 {
     Padron Votante;
     struct Nodo_Lv *Sig;
@@ -26,7 +27,8 @@ void init_RS (RS *rs)
 }
 
 void freeRS (RS *rs){
-    for(int i = 0; i < TAM_RS; i++){
+    int i;
+    for(i = 0; i < TAM_RS; i++){
         Nodo_Lv *actual = (*rs).rebalse[i];
         while(actual != NULL){
             Nodo_Lv *eliminar = actual;
@@ -37,28 +39,33 @@ void freeRS (RS *rs){
     }
     (*rs).Ocupadas = 0;
 }
-
+// retorna 1 si lo encuentra y 0 si no existe
+// Costo = Celdas Consultadas (1 celda de tabla + 1 por cada nodo leido)
 int Localizar_RS (RS *rs, int Dni, int *hash, int *costo, Nodo_Lv **pos, Nodo_Lv **prepos)
 {
-    *hash = hashing(Dni, TAM_RS), 
+    *costo = 0;
+    *hash = hashing(Dni, TAM_RS);
     *pos = (*rs).rebalse[*hash];
     *prepos = NULL;
 
+    // 1 celda consultada: la posicion del arreglo rebalse[*hash]
+    (*costo)++;
+
     if (*pos == NULL) {
-        (*costo)++;  
         return 0;   // balde vacio
     }
 
+    // recorrido de los nodos
     while ((*pos)->Sig != NULL && (*pos)->Votante.DNI != Dni) {
-        (*costo)++;
+        (*costo)++;  // nodo actual
         *prepos = *pos;
         *pos = (*pos)->Sig;
     }
 
-    (*costo)++;
+    (*costo)++;  // se inspecciona el nodo donde se detuvo el puntero
     return (*pos)->Votante.DNI == Dni;  // devuelve 1 si lo encontro, 0 si no
 }
-
+// retorna 1 si es alta existosa, 0 si esta repetido, -1 si no hay memoria
 int Alta_RS (RS *rs, Padron Votante){
     int hash = 0 , costo = 0;
     Nodo_Lv *pos = NULL, *prepos = NULL;
@@ -69,7 +76,7 @@ int Alta_RS (RS *rs, Padron Votante){
             return -1;  // sin memoria
         }
         nuevo->Votante = Votante;
-        // Insertar al inicio de la lista
+        // Insercion de O(1)al inicio de la lista
         nuevo->Sig = (*rs).rebalse[hash];
         (*rs).rebalse[hash] = nuevo;
         (*rs).Ocupadas++;
@@ -102,34 +109,66 @@ int Baja_RS (RS *rs, Padron votante){
     return 0;  // el elemento no coincide
 }
 
+Padron Evocar_RS (RS *rs,Padron votante, int *costo, int *exito){
+    int hash = 0;
+    (*costo) = 0;
+
+    Nodo_Lv *pos = NULL; 
+    Nodo_Lv *prevpos = NULL;
+
+    (*exito) = Localizar_RS (rs,votante.DNI,&hash,costo,&pos,&prevpos);
+
+    if (*exito){
+        // retorno lo que haya quedado apuntando el cursor
+        return pos->Votante;
+    }
+    // registro nulo en caso de fracaso
+    Padron vacio;
+    memset(&vacio, 0, sizeof(Padron));
+    vacio.DNI = -1;
+    return vacio;
+}
 void Mostrar_RS (RS rs){
-    int elementosEnPagina = 0, paginaActual = 1, i;
-    for (i=0; i<TAM_RS; i++){
-        Nodo_Lv *actual = rs.rebalse[i];
+    int listasEnPagina = 0;
+    int paginaActual = 1;
+    int i;
+    
+    printf("\n=========== Estado de la estructura RS ==========\n");
+    printf("Total de votantes registrados: %d | Capacidad (M): %d\n", (rs).Ocupadas, TAM_RS);
+    printf("\n=================================================\n");
+
+    for (i=0; i<TAM_RS; i++)
+    {
+        Nodo_Lv *actual = (rs).rebalse[i];
         int balde = 1;
-        printf("---------------------\n");
-        printf("Lista numero %d\n", i);
-        printf("---------------------\n");
+        printf("---------------------------\n");
+        printf("Poscion | Lista Hashing: %d\n", i);
+        printf("---------------------------\n");
 
         if (actual == NULL){
-            printf("Esta lista esta vacia\n");
+            printf("[Lista Vacia]\n");
         }else {
             while (actual != NULL)
             {
-                printf("Balde/Nodo: %d\n", balde);
+                printf("-> Nodo: %d\n", balde);
                 printPadron(actual->Votante);
 
                 actual = actual->Sig;
                 balde++;
-                elementosEnPagina++;
-                if (elementosEnPagina==10){   // 10 elementos por pagina
-                    printf("------ Fin de pagina %d ------\n\n", paginaActual++);
-                    elementosEnPagina = 0;
-                    printf("Presione ENTER para continuar...");
-                    getchar();
-                }
             }
         }
+
+        listasEnPagina++;
+
+        if(listasEnPagina == 15)
+        {
+            printf("\n----- Fin de pagina %d (Presione ENTER para continuar) -----\n", paginaActual++);
+            listasEnPagina = 0;
+            while (getchar() != '\n'); // limpia buffer y espera ENTER
+        }
+    }
+    if (listasEnPagina > 0){
+        printf("\n------- Fin de listado RS -------\n");
     }
 }
 
