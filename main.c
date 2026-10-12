@@ -10,7 +10,7 @@
 #include "RAC.h"
 #include "RAL.h"
 
-void CargaArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float maximos[2][6]);
+int CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float maximos[2][3]);
 void TablaComparadora(float costos[2][6], float maximos[2][3]); //ahora solo contiene evocaciones
 
 int main()
@@ -38,7 +38,7 @@ int main()
         {
             case 1:  // Tabla de costos - comparacion
             {
-                //cargar archivo
+                CargarArchivo(&Rebalse_Lineal, &Rebalse_Cuadratico, &Rebalse_Separado, costos, maximos);
                 TablaComparadora(costos, maximos);
                 break;
             }
@@ -71,7 +71,7 @@ int main()
     } while(1==1);
 }
 
-void CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float *maximos[2][3])
+int CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float maximos[2][3])
 {
     FILE *Fp; Padron aux;
     int costo;
@@ -80,11 +80,11 @@ void CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float *maximo
     for (i = 0; i < 2; i++) //limpia los costos si por error se toca 2 veces la opcion 1
     {
         for (j = 0; j < 6; j++)
-            costos[i][j] = 0.0;
+            costos[i][j] = 0.0f;
         for (j = 0; j < 3; j++)
-            maximos[i][j] = 0.0;
+            maximos[i][j] = 0.0f;
     }
-    Fp = fopen("Operaciones.txt", "r");
+    Fp = fopen("Operaciones_Padron.txt", "r");
     if (Fp == NULL) {
         printf("Error al abrir el archivo.\n");
         return 0;
@@ -119,10 +119,10 @@ void CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float *maximo
 
                 // RAL
                 Insertar_RAL(ral, aux);
-                
+
                 // RAC
                 Insertar_RAC(rac, aux);
-                
+
                 // RS
                 Alta_RS(rs, aux);
                 break;
@@ -147,10 +147,10 @@ void CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float *maximo
 
                 // RAL
                 Eliminar_RAL(ral, aux);
-                
+
                 // RAC
                 Eliminar_RAC(rac, aux);
-                
+
                 // RS
                 Baja_RS(rs, aux);
                 break;
@@ -170,11 +170,11 @@ void CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float *maximo
                 int fila_rac = (Exito) ? 0 : 1;
                 costos[fila_rac][1] += costo;
                 costos[fila_rac][4]++;
-                if (costo > maximos[fila_ral][1]) maximos[fila_ral][1] = costo;
+                if (costo > maximos[fila_rac][1]) maximos[fila_rac][1] = costo;
 
                 //RS
                 costo = 0;
-                // Exito = rs(lso, &aux, &costo);
+                Evocar_RS(rs, aux, &costo, &Exito);
                 int fila_rs = (Exito) ? 0 : 1;
                 costos[fila_rs][2] += costo;
                 costos[fila_rs][5]++;
@@ -187,14 +187,11 @@ void CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float *maximo
     fclose(Fp);
     return 1;
 }
-}
 
-void TablaComparadora(float costos[4][6], float maximos[4][3])
+void TablaComparadora(float costos[2][6], float maximos[2][3])
 {
-    const char *ops[4] =
+    const char *ops[2] =
     {
-        "ALTAS",
-        "BAJAS",
         "EVOC. EXITOSAS",
         "EVOC. FALLIDAS"
     };
@@ -205,18 +202,19 @@ void TablaComparadora(float costos[4][6], float maximos[4][3])
     printf("==================== COMPARACION DE ESTRUCTURAS ====================\n\n");
 
     printf("%-*s", ANCHO_COL0, "Operacion");
-    printf("%-*s", ANCHO_DATOS, "ABB");
-    printf("%-*s", ANCHO_DATOS, "LVO");
-    printf("%-*s", ANCHO_DATOS, "LSOBB");
+    printf("%-*s", ANCHO_DATOS, "RAL");
+    printf("%-*s", ANCHO_DATOS, "RAC");
+    printf("%-*s", ANCHO_DATOS, "RS");
     printf("\n");
     printf("--------------------------------------------------------------------\n");
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 2; i++)
     {
         printf("%s \n", ops[i]);
 
         printf("%-*s", ANCHO_COL0, "  Media");
-        for (j = 0; j < 3; j++) {
+        for (j = 0; j < 3; j++)
+        {
             media = (costos[i][j+3] > 0.0f) ? (costos[i][j] / costos[i][j+3]) : 0.0f;
             printf("%-*.3f", ANCHO_DATOS, media);
         }
@@ -229,6 +227,7 @@ void TablaComparadora(float costos[4][6], float maximos[4][3])
         printf("\n");
         printf("--------------------------------------------------------------------\n");
     }
+    printf(" %f %f",costos[0][1], costos[0][4]);
 
     printf("\n");
     system("pause");

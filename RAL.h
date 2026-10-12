@@ -1,7 +1,7 @@
 #ifndef RAL_H_INCLUDED
 #define RAL_H_INCLUDED
 #include "Padron.h"
-#define TAMANO_RAL 2531
+#define TAMANO_RAL 2539
 
 typedef struct
 {
@@ -28,7 +28,7 @@ int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
     while (i < TAMANO_RAL && (*Ral).Votantes[Candidato].Estado) //como la posicion solo es virgen si estado = 0, deberia funcionar
     {
         (*Celdas_Consultadas)++;
-        if ((*Ral).Votantes[Candidato].DNI == DNI)
+        if ((*Ral).Votantes[Candidato].DNI == DNI && (*Ral).Votantes[Candidato].Estado == 1)
         {
             *Posicion = Candidato;
             return 1; //esta en esta posicion
@@ -66,7 +66,7 @@ int Insertar_RAL (RAL *Ral, Padron Votante)
     {
         return 0;
     }
-    if(Posicion = -1) //no encontro una celda virgen ni vacia en ningun momento
+    if(Posicion == -1) //no encontro una celda virgen ni vacia en ningun momento
     {
         return 0;
     }
@@ -79,7 +79,7 @@ int Insertar_RAL (RAL *Ral, Padron Votante)
 int Eliminar_RAL (RAL *Ral, Padron Votante)
 {
     int Celdas, Posicion;
-    if((*Ral).Ocupadas) //esta vacio el RAL
+    if(!(*Ral).Ocupadas) //esta vacio el RAL
     {
         return 0;
     }
@@ -99,7 +99,7 @@ int Eliminar_RAL (RAL *Ral, Padron Votante)
 int Evocar_RAL (RAL *Ral, int DNI, Padron *Votante,int *Celdas_Consultadas)
 {
     int Posicion;
-    if((*Ral).Ocupadas) //esta vacio el RAL
+    if(!(*Ral).Ocupadas) //esta vacio el RAL
     {
         return 0;
     }
@@ -120,7 +120,7 @@ void Mostrar_RAL (RAL *Ral)
         Condicion = (*Ral).Votantes[i].Estado;
         if(!Condicion) //la celda es virgen
         {
-            pritnf ("\n La posicion %d es virgen \n", i);
+            printf ("\n La posicion %d es virgen \n", i);
         }
         if(Condicion == 1) //la celda esta ocupada
         {
@@ -128,7 +128,7 @@ void Mostrar_RAL (RAL *Ral)
         }
         if(Condicion == 2) //la celda esta libre
         {
-            pritnf ("\n La posicion %d esta libre \n", i);
+            printf ("\n La posicion %d esta libre \n", i);
         }
     }
 }

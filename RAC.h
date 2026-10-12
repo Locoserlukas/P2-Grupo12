@@ -1,6 +1,6 @@
 #ifndef RAC_H_INCLUDED
 #define RAC_H_INCLUDED
-#include "Padron.h" 
+#include "Padron.h"
 #define TAMANO_RAC 2411
 
 typedef struct
@@ -25,35 +25,36 @@ int Localizador_RAC (RAC *Rac, int DNI, int *Posicion, int *Celdas_Consultadas)
     *Posicion = -1;
     *Celdas_Consultadas = 0;
 
-    while (i < TAMANO_RAC && (*Rac).Votantes[Candidato].Estado) //como la posicion solo es virgen si estado = 0, deberia funcionar
+    while (i < TAMANO_RAC && (*Rac).Votantes[Candidato].Estado) //como estado es virgen con 0, esto sirve
     {
         (*Celdas_Consultadas)++;
-        if ((*Rac).Votantes[Candidato].DNI == DNI)
+        if ((*Rac).Votantes[Candidato].Estado == 1 && (*Rac).Votantes[Candidato].DNI == DNI)
         {
             *Posicion = Candidato;
-            return 1; //esta en esta posicion
+            return 1;
         }
 
-        if((*Rac).Votantes[Candidato].Estado == 2 && *Posicion == -1) //en caso de tratarse de un alta, este es el mejor lugar
+        if ((*Rac).Votantes[Candidato].Estado == 2 && *Posicion == -1) //guarda la primer celda libre para un alta
         {
             *Posicion = Candidato;
         }
+
         i++;
         Candidato = (Candidato + k) % TAMANO_RAC;
-        k = k + 1; //esto calcula el salto cuadratico necesario
+        k = k + 1;
     }
 
-    if(i < TAMANO_RAC) //por si la primera celda consultada era virgen
+    if (i < TAMANO_RAC) //por si se rompe el while por virgen
     {
         (*Celdas_Consultadas)++;
     }
 
-    if ((*Rac).Votantes[i].Estado && *Posicion == -1) //por si caemos en una celda virgen y no encontramos una libre antes
+    if (!(*Rac).Votantes[Candidato].Estado && *Posicion == -1) //guarda la celda virgen si no hay una libre antes
     {
         *Posicion = Candidato;
     }
 
-    return 0; //no esta en el rebalse
+    return 0;
 }
 
 int Insertar_RAC (RAC *Rac, Padron Votante)
@@ -67,7 +68,7 @@ int Insertar_RAC (RAC *Rac, Padron Votante)
     {
         return 0;
     }
-    if(Posicion = -1) //no encontro una celda virgen ni vacia en ningun momento
+    if(Posicion == -1) //no encontro una celda virgen ni vacia en ningun momento
     {
         return 0;
     }
@@ -79,7 +80,7 @@ int Insertar_RAC (RAC *Rac, Padron Votante)
 int Eliminar_RAC (RAC *Rac, Padron Votante)
 {
     int Celdas, Posicion;
-    if((*Rac).Ocupadas) //esta vacio el RAC
+    if((*Rac).Ocupadas == 0) //esta vacio el RAC
     {
         return 0;
     }
@@ -96,14 +97,14 @@ int Eliminar_RAC (RAC *Rac, Padron Votante)
     return 0;
 }
 
-int Evocar_RAC (RAL *Rac, int DNI, Padron *Votante,int *Celdas_Consultadas)
+int Evocar_RAC (RAC *Rac, int DNI, Padron *Votante,int *Celdas_Consultadas)
 {
     int Posicion;
-    if((*Rac).Ocupadas) //esta vacio el RAL
+    if((*Rac).Ocupadas == 0) //esta vacio el RAL
     {
         return 0;
     }
-    if(Localizador_RAC(Rac,DNI,&Posicion,Celdas_Consultadas)) //no lo encontro
+    if(Localizador_RAC(Rac,DNI,&Posicion,Celdas_Consultadas)) //lo encontro
     {
         *Votante = (*Rac).Votantes[Posicion];
         return 1;
@@ -120,7 +121,7 @@ void Mostrar_RAC (RAC *Rac)
         Condicion = (*Rac).Votantes[i].Estado;
         if(!Condicion) //la celda es virgen
         {
-            pritnf ("\n La posicion %d es virgen \n", i);
+            printf ("\n La posicion %d es virgen \n", i);
         }
         if(Condicion == 1) //la celda esta ocupada
         {
@@ -128,7 +129,7 @@ void Mostrar_RAC (RAC *Rac)
         }
         if(Condicion == 2) //la celda esta libre
         {
-            pritnf ("\n La posicion %d esta libre \n", i);
+            printf ("\n La posicion %d esta libre \n", i);
         }
     }
 }
