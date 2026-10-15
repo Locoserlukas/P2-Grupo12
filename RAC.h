@@ -139,7 +139,7 @@ void Mostrar_RAC (RAC *Rac)
         }
 
         elementosEnPagina++;
-        getchar();
+        
 
         if(elementosEnPagina == 15)
         {

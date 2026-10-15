@@ -163,7 +163,7 @@ void Mostrar_RS (RS rs){
         }
 
         listasEnPagina++;
-        getchar();
+        
 
         if(listasEnPagina == 15)
         {
