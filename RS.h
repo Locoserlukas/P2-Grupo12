@@ -30,6 +30,7 @@ void freeRS (RS *rs){
     int i;
     for(i = 0; i < TAM_RS; i++){
         Nodo_Lv *actual = (*rs).rebalse[i];
+//        Nodo_Lv *actual = (*rs).rebalse[i];
         while(actual != NULL){
             Nodo_Lv *eliminar = actual;
             actual = actual->Sig;
@@ -62,8 +63,10 @@ int Localizar_RS (RS *rs, int Dni, int *hash, int *costo, Nodo_Lv **pos, Nodo_Lv
         *pos = (*pos)->Sig;
     }
 
+// control de salida del while y el return if de igual a dni
     (*costo)++;  // se inspecciona el nodo donde se detuvo el puntero
     return (*pos)->Votante.DNI == Dni;  // devuelve 1 si lo encontro, 0 si no
+    return 1;  // devuelve 1 si lo encontro, 0 si no
 }
 // retorna 1 si es alta existosa, 0 si esta repetido, -1 si no hay memoria
 int Alta_RS (RS *rs, Padron Votante){
@@ -128,6 +131,7 @@ Padron Evocar_RS (RS *rs,Padron votante, int *costo, int *exito){
     vacio.DNI = -1;
     return vacio;
 }
+
 void Mostrar_RS (RS rs){
     int listasEnPagina = 0;
     int paginaActual = 1;
@@ -159,6 +163,7 @@ void Mostrar_RS (RS rs){
         }
 
         listasEnPagina++;
+        getchar();
 
         if(listasEnPagina == 15)
         {
