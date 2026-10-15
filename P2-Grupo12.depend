@@ -32,3 +32,25 @@
 1791842772 z:\p2-grupo12\ral.h
 	"Padron.h"
 
+1792024960 source:c:\users\bianm\onedrive\documentos\github\p2-grupo12\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<strings.h>
+	<ctype.h>
+	"Padron.h"
+	"RS.h"
+	"RAC.h"
+	"RAL.h"
+
+1791407979 c:\users\bianm\onedrive\documentos\github\p2-grupo12\padron.h
+
+1792025557 c:\users\bianm\onedrive\documentos\github\p2-grupo12\rs.h
+	"Padron.h"
+
+1792025555 c:\users\bianm\onedrive\documentos\github\p2-grupo12\rac.h
+	"Padron.h"
+
+1792025554 c:\users\bianm\onedrive\documentos\github\p2-grupo12\ral.h
+	"Padron.h"
+

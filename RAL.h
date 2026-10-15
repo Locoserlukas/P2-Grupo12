@@ -138,7 +138,7 @@ void Mostrar_RAL (RAL *Ral)
         }
 
         elementosEnPagina++;
-        getchar();
+        
 
         if(elementosEnPagina == 15)
         {
