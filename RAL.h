@@ -1,7 +1,7 @@
 #ifndef RAL_H_INCLUDED
 #define RAL_H_INCLUDED
 #include "Padron.h"
-#define TAMANO_RAL 2531
+#define TAMANO_RAL 2539
 
 typedef struct
 {
@@ -28,7 +28,7 @@ int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
     while (i < TAMANO_RAL && (*Ral).Votantes[Candidato].Estado) //como la posicion solo es virgen si estado = 0, deberia funcionar
     {
         (*Celdas_Consultadas)++;
-        if ((*Ral).Votantes[Candidato].DNI == DNI)
+        if ((*Ral).Votantes[Candidato].DNI == DNI && (*Ral).Votantes[Candidato].Estado == 1)
         {
             *Posicion = Candidato;
             return 1; //esta en esta posicion
@@ -47,7 +47,7 @@ int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
         (*Celdas_Consultadas)++;
     }
 
-    if ((*Ral).Votantes[i].Estado && *Posicion == -1) //por si caemos en una celda virgen y no encontramos una libre antes
+    if (!(*Ral).Votantes[Candidato].Estado && *Posicion == -1) //por si caemos en una celda virgen y no encontramos una libre antes
     {
         *Posicion = Candidato;
     }
@@ -55,29 +55,83 @@ int Localizador_RAL (RAL *Ral, int DNI, int *Posicion, int *Celdas_Consultadas)
     return 0; //no esta en el rebalse
 }
 
-
-/* int Insertar_RAL (RAL *Ral, Padron Votante)
+int Insertar_RAL (RAL *Ral, Padron Votante)
 {
-
+    int Celdas, Posicion;
+    if((*Ral).Ocupadas == TAMANO_RAL) //esta lleno el RAL
+    {
+        return 0;
+    }
+    if(Localizador_RAL(Ral,get_DNI(Votante),&Posicion,&Celdas)) //revisa si encuentra al votante y nos da la posicion donde iria si no esta
+    {
+        return 0;
+    }
+    if(Posicion == -1) //no encontro una celda virgen ni vacia en ningun momento
+    {
+        return 0;
+    }
+    (*Ral).Votantes[Posicion] = Votante;
+    (*Ral).Ocupadas++;
+    return 1;
 }
-*/
 
-/* int Eliminar_RAL (RAL *Ral, Padron Votante)
+
+int Eliminar_RAL (RAL *Ral, Padron Votante)
 {
-
+    int Celdas, Posicion;
+    if(!(*Ral).Ocupadas) //esta vacio el RAL
+    {
+        return 0;
+    }
+    if(!Localizador_RAL(Ral,get_DNI(Votante),&Posicion,&Celdas)) //no lo encontro
+    {
+        return 0;
+    }
+    if(comparaPadron(Votante,(*Ral).Votantes[Posicion]))
+    {
+        (*Ral).Votantes[Posicion].Estado = 2; //marca la celda como libre
+        (*Ral).Ocupadas--;
+        return 1;
+    }
+    return 0;
 }
-*/
 
-/* int Evocar_RAL (RAL *Ral, Padron *Votante)
+int Evocar_RAL (RAL *Ral, int DNI, Padron *Votante,int *Celdas_Consultadas)
 {
-
+    int Posicion;
+    if(!(*Ral).Ocupadas) //esta vacio el RAL
+    {
+        return 0;
+    }
+    if(Localizador_RAL(Ral,DNI,&Posicion,Celdas_Consultadas)) //no lo encontro
+    {
+        *Votante = (*Ral).Votantes[Posicion];
+        return 1;
+    }
+    return 0;
 }
-*/
 
-/* void Mostrar_RAL (RAL *Ral)
+void Mostrar_RAL (RAL *Ral)
 {
-
+    int i, Condicion;
+    printf ("\t Votantes Rebalse Abierto Lineal (RAL) \n");
+    for (i = 0; i < TAMANO_RAL; i++)
+    {
+        Condicion = (*Ral).Votantes[i].Estado;
+        if(!Condicion) //la celda es virgen
+        {
+            printf ("\n La posicion %d es virgen \n", i);
+        }
+        if(Condicion == 1) //la celda esta ocupada
+        {
+            printPadron((*Ral).Votantes[i]);
+        }
+        if(Condicion == 2) //la celda esta libre
+        {
+            printf ("\n La posicion %d esta libre \n", i);
+        }
+    }
 }
-*/
+
 
 #endif // RAL_H_INCLUDED
