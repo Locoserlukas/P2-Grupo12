@@ -114,22 +114,42 @@ int Evocar_RAL (RAL *Ral, int DNI, Padron *Votante,int *Celdas_Consultadas)
 void Mostrar_RAL (RAL *Ral)
 {
     int i, Condicion;
-    printf ("\t Votantes Rebalse Abierto Lineal (RAL) \n");
+    int elementosEnPagina = 0;
+    int paginaActual = 1;
+    
+    printf("\t Votantes Rebalse Abierto Lineal (RAL) \n");
+    printf("=================================================\n");
+
     for (i = 0; i < TAMANO_RAL; i++)
     {
         Condicion = (*Ral).Votantes[i].Estado;
-        if(!Condicion) //la celda es virgen
+        
+        if(!Condicion) // la celda es virgen
         {
-            printf ("\n La posicion %d es virgen \n", i);
+            printf("\n La posicion %d es virgen \n", i);
         }
-        if(Condicion == 1) //la celda esta ocupada
+        else if(Condicion == 1) // la celda esta ocupada
         {
             printPadron((*Ral).Votantes[i]);
         }
-        if(Condicion == 2) //la celda esta libre
+        else if(Condicion == 2) // la celda esta libre
         {
-            printf ("\n La posicion %d esta libre \n", i);
+            printf("\n La posicion %d esta libre \n", i);
         }
+
+        elementosEnPagina++;
+        getchar();
+
+        if(elementosEnPagina == 15)
+        {
+            printf("\n----- Fin de pagina %d (Presione ENTER para continuar) -----\n", paginaActual++);
+            elementosEnPagina = 0;
+            while (getchar() != '\n'); // limpia buffer y espera ENTER
+        }
+    }
+    
+    if (elementosEnPagina > 0){
+        printf("\n------- Fin de listado RAL -------\n");
     }
 }
 
