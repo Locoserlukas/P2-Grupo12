@@ -29,7 +29,7 @@ void init_RS (RS *rs)
 void freeRS (RS *rs){
     int i;
     for(i = 0; i < TAM_RS; i++){
-//        Nodo_Lv *actual = (*rs).rebalse[i];
+        Nodo_Lv *actual = (*rs).rebalse[i];
         while(actual != NULL){
             Nodo_Lv *eliminar = actual;
             actual = actual->Sig;
@@ -61,9 +61,12 @@ int Localizar_RS (RS *rs, int Dni, int *hash, int *costo, Nodo_Lv **pos, Nodo_Lv
         *prepos = *pos;
         *pos = (*pos)->Sig;
     }
-// control de salida del while y el return if de igual a dni
-    (*costo)++;  // se inspecciona el nodo donde se detuvo el puntero
-    return 1;  // devuelve 1 si lo encontro, 0 si no
+    // control de salida del while y el return if de igual a dni
+    if ((*pos)->Votante.DNI == Dni){ // salio por igualdad 
+        (*costo)++;
+        return 1;
+    }
+    else return 0;
 }
 // retorna 1 si es alta existosa, 0 si esta repetido, -1 si no hay memoria
 int Alta_RS (RS *rs, Padron Votante){
