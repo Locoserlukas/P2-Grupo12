@@ -44,6 +44,7 @@ int main()
             }
             case 2:  // Mostrar RAL
             {
+                getchar();
                 system("cls");
                 Mostrar_RAL(&Rebalse_Lineal);
                 system("pause");
@@ -51,6 +52,7 @@ int main()
             }
             case 3:  // Mostar RAC
             {
+                getchar();
                 system("cls");
                 Mostrar_RAC(&Rebalse_Cuadratico);
                 system("pause");
@@ -58,6 +60,7 @@ int main()
                 }
             case 4:  // Mostrar RS
             {
+                getchar();
                 system("cls");
                 Mostrar_RS(Rebalse_Separado);
                 system("pause");
