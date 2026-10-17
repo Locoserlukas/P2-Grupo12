@@ -8,6 +8,30 @@
 #include "RS.h"
 #include "RAC.h"
 #include "RAL.h"
+/*
+    Dados los resultados de la tabla, podemos concluir que:
+        El método de rebalse separado demuestra ser la alternativa más optima para la realizacion de búsquedas 
+        (tanto exitosas como fallidas), manteniendo las marcas de accesso más reducidas de la comparación y con 
+        un máximo de solo 19 celdas consultadas. Estos valores ratifican que es la estructura más efectiva para 
+        resolver colisiones en el conjunto de datos analizado.
+        En contraposicion, RAC y RAL exhiben un desempeño considerablemente inferior, dando promedios y máximos 
+        de costo muchos más elevados; especialmente en el RAL, donde el impacto del agrupamiento exige revisar 
+        cerca de 2000 celdas en las evocaciones no exitosas. 
+
+        ==================== COMPARACION DE ESTRUCTURAS ====================
+
+        Operacion             RAL           RAC           RS
+        --------------------------------------------------------------------
+        EVOC. EXITOSAS
+        Media               559.780       29.464        5.209
+        Maxima              1964.000      65.000        19.000
+        --------------------------------------------------------------------
+        EVOC. FALLIDAS
+        Media               1579.176      56.034        7.238
+        Maxima              1998.000      68.000        19.000
+        --------------------------------------------------------------------
+
+*/
 
 int CargarArchivo(RAL *ral, RAC *rac, RS *rs, float costos[2][6], float maximos[2][3]);
 void TablaComparadora(float costos[2][6], float maximos[2][3]); //ahora solo contiene evocaciones
@@ -37,6 +61,7 @@ int main()
         {
             case 1:  // Tabla de costos - comparacion
             {
+                getchar();
                 freeRS(&Rebalse_Separado);
                 CargarArchivo(&Rebalse_Lineal, &Rebalse_Cuadratico, &Rebalse_Separado, costos, maximos);
                 TablaComparadora(costos, maximos);
@@ -67,7 +92,10 @@ int main()
                 break;
             }
             case 5:
-            {return 0;}
+            {   
+                freeRS(&Rebalse_Separado);
+                return 0;
+            }
             default:
                 printf("Opcion no valida.\n");
         }
@@ -230,7 +258,7 @@ void TablaComparadora(float costos[2][6], float maximos[2][3])
         printf("\n");
         printf("--------------------------------------------------------------------\n");
     }
-    printf(" %f %f",costos[0][1], costos[1][1]);
+    
 
     printf("\n");
     system("pause");
