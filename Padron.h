@@ -1,5 +1,6 @@
 #ifndef PADRON_H_INCLUDED
 #define PADRON_H_INCLUDED
+#include <stdio.h>
 #define MAX_NOMBRE 51
 #define MAX_DOMICILIO 81
 

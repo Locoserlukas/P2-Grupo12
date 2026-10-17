@@ -2,7 +2,7 @@
 #define RS_H_INCLUDED
 #include "Padron.h"
 // 2000 / (1.61 * 1) = 1242.23 -> Primo superior mas cercano: 1249
-#define TAM_RS 1249   
+#define TAM_RS 1249
 
 typedef struct Nodo_Lv
 {
@@ -61,9 +61,9 @@ int Localizar_RS (RS *rs, int Dni, int *hash, int *costo, Nodo_Lv **pos, Nodo_Lv
         *prepos = *pos;
         *pos = (*pos)->Sig;
     }
+    (*costo)++;
     // control de salida del while y el return if de igual a dni
-    if ((*pos)->Votante.DNI == Dni){ // salio por igualdad 
-        (*costo)++;
+    if ((*pos)->Votante.DNI == Dni){ // salio por igualdad
         return 1;
     }
     else return 0;
@@ -116,9 +116,15 @@ Padron Evocar_RS (RS *rs,Padron votante, int *costo, int *exito){
     int hash = 0;
     (*costo) = 0;
 
-    Nodo_Lv *pos = NULL; 
+    Nodo_Lv *pos = NULL;
     Nodo_Lv *prevpos = NULL;
 
+    if((*rs).Ocupadas == 0)
+    {
+        Padron vacio;
+        *exito = 0;
+        return vacio;
+    }
     (*exito) = Localizar_RS (rs,votante.DNI,&hash,costo,&pos,&prevpos);
 
     if (*exito){
@@ -136,7 +142,7 @@ void Mostrar_RS (RS rs){
     int listasEnPagina = 0;
     int paginaActual = 1;
     int i;
-    
+
     printf("\n=========== Estado de la estructura RS ==========\n");
     printf("Total de votantes registrados: %d | Capacidad (M): %d\n", (rs).Ocupadas, TAM_RS);
     printf("\n=================================================\n");
@@ -163,7 +169,7 @@ void Mostrar_RS (RS rs){
         }
 
         listasEnPagina++;
-        
+
 
         if(listasEnPagina == 15)
         {

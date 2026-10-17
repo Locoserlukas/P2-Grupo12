@@ -5,7 +5,7 @@
 
 typedef struct
 {
-    Padron Votantes[TAMANO_RAL]; //tamano definido en base a la formula (aprox 2532)
+    Padron Votantes[TAMANO_RAL]; //tamano definido en base al numero primo mas cercano obtenido mediante la formula (aprox 2532)
     int Ocupadas; //indica la cantidad de celdas con elementos
 } RAL;
 
@@ -116,14 +116,14 @@ void Mostrar_RAL (RAL *Ral)
     int i, Condicion;
     int elementosEnPagina = 0;
     int paginaActual = 1;
-    
+
     printf("\t Votantes Rebalse Abierto Lineal (RAL) \n");
     printf("=================================================\n");
 
     for (i = 0; i < TAMANO_RAL; i++)
     {
         Condicion = (*Ral).Votantes[i].Estado;
-        
+
         if(!Condicion) // la celda es virgen
         {
             printf("\n La posicion %d es virgen \n", i);
@@ -138,7 +138,7 @@ void Mostrar_RAL (RAL *Ral)
         }
 
         elementosEnPagina++;
-        
+
 
         if(elementosEnPagina == 15)
         {
@@ -147,7 +147,7 @@ void Mostrar_RAL (RAL *Ral)
             while (getchar() != '\n'); // limpia buffer y espera ENTER
         }
     }
-    
+
     if (elementosEnPagina > 0){
         printf("\n------- Fin de listado RAL -------\n");
     }

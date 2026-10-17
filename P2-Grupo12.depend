@@ -8,6 +8,8 @@
 	<math.h>
 	"Padron.h"
 
+1792025554 
+
 1791145894 c:\users\alfon\dropbox\eda\p2-grupo12\padron.h
 
 1791843807 source:z:\p2-grupo12\main.c
@@ -52,5 +54,27 @@
 	"Padron.h"
 
 1792025554 c:\users\bianm\onedrive\documentos\github\p2-grupo12\ral.h
+	"Padron.h"
+
+1792265641 source:/home/LucasAlfonso/Dropbox/EDA/P2-Grupo12/main.c
+	<stdlib.h>
+	<string.h>
+	<strings.h>
+	<ctype.h>
+	"Padron.h"
+	"RS.h"
+	"RAC.h"
+	"RAL.h"
+
+1792263070 /home/LucasAlfonso/Dropbox/EDA/P2-Grupo12/Padron.h
+	<stdio.h>
+
+1792265604 /home/LucasAlfonso/Dropbox/EDA/P2-Grupo12/RS.h
+	"Padron.h"
+
+1792265604 /home/LucasAlfonso/Dropbox/EDA/P2-Grupo12/RAC.h
+	"Padron.h"
+
+1792265604 /home/LucasAlfonso/Dropbox/EDA/P2-Grupo12/RAL.h
 	"Padron.h"
 

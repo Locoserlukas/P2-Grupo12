@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -38,6 +37,7 @@ int main()
         {
             case 1:  // Tabla de costos - comparacion
             {
+                freeRS(&Rebalse_Separado);
                 CargarArchivo(&Rebalse_Lineal, &Rebalse_Cuadratico, &Rebalse_Separado, costos, maximos);
                 TablaComparadora(costos, maximos);
                 break;
@@ -230,7 +230,7 @@ void TablaComparadora(float costos[2][6], float maximos[2][3])
         printf("\n");
         printf("--------------------------------------------------------------------\n");
     }
-    printf(" %f %f",costos[0][1], costos[0][4]);
+    printf(" %f %f",costos[0][1], costos[1][1]);
 
     printf("\n");
     system("pause");

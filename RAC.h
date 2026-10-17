@@ -5,7 +5,7 @@
 
 typedef struct
 {
-    Padron Votantes[TAMANO_RAC]; //tamano definido en base a la formula (aprox 2410)
+    Padron Votantes[TAMANO_RAC]; //tamano definido en base al numero primo mas cercano obtenido mediante la formula (aprox 2410)
     int Ocupadas; //indica la cantidad de celdas con elementos
 } RAC;
 
@@ -100,7 +100,7 @@ int Eliminar_RAC (RAC *Rac, Padron Votante)
 int Evocar_RAC (RAC *Rac, int DNI, Padron *Votante,int *Celdas_Consultadas)
 {
     int Posicion;
-    if((*Rac).Ocupadas == 0) //esta vacio el RAL
+    if((*Rac).Ocupadas == 0) //esta vacio el RAC
     {
         return 0;
     }
@@ -117,14 +117,14 @@ void Mostrar_RAC (RAC *Rac)
     int i, Condicion;
     int elementosEnPagina = 0;
     int paginaActual = 1;
-    
+
     printf("\t Votantes Rebalse Abierto Cuadratico (RAC) \n");
     printf("=================================================\n");
 
     for (i = 0; i < TAMANO_RAC; i++)
     {
         Condicion = (*Rac).Votantes[i].Estado;
-        
+
         if(!Condicion) // la celda es virgen
         {
             printf("\n La posicion %d es virgen \n", i);
@@ -139,7 +139,7 @@ void Mostrar_RAC (RAC *Rac)
         }
 
         elementosEnPagina++;
-        
+
 
         if(elementosEnPagina == 15)
         {
@@ -148,7 +148,7 @@ void Mostrar_RAC (RAC *Rac)
             while (getchar() != '\n'); // limpia buffer y espera ENTER
         }
     }
-    
+
     if (elementosEnPagina > 0){
         printf("\n------- Fin de listado RAC -------\n");
     }
